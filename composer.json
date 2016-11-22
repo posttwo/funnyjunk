@@ -1,0 +1,11 @@
+{
+    "name": "posttwo/FunnyJunk",
+    "autoload": {
+        "psr-4": {
+            "Posttwo\\FunnyJunk\\": "src/"
+        }
+    },
+    "require": {
+		"leeoniya/dump-r": "dev-master"
+    }
+}
