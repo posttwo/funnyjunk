@@ -1,5 +1,5 @@
 {
-    "name": "posttwo/FunnyJunk",
+    "name": "posttwo/funnyjunk",
     "autoload": {
         "psr-4": {
             "Posttwo\\FunnyJunk\\": "src/"
