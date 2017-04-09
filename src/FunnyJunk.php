@@ -34,13 +34,15 @@ class FunnyJunk{
                     $key = key($tmp);
                     $value = $tmp[$key];
                     FunnyJunk::$cookie = FunnyJunk::$cookie . $key . '=' . $value . '; ';
-                    Cache::put($login . "-cookie", FunnyJunk::$cookie, 180);
                 }
             }
+            FunnyJunk::$cookie = substr(FunnyJunk::$cookie, 0, -2);
+            Cache::put($login . "-cookie", FunnyJunk::$cookie, 180);
         }else{
-            Debugbar::info("Logging in via cached cookie!");
+            Debugbar::info("Logging in with cached cookie");
+            FunnyJunk::$cookie = $cache;
         }
-        FunnyJunk::$cookie = substr(FunnyJunk::$cookie, 0, -2);
+        
     }
 	
     public function getInbox()
@@ -90,6 +92,13 @@ class FunnyJunk{
         return $moderators;
 	}
 
+
+   public function acceptFriends()
+   {
+        $data = ['user' => 'posttwo'];
+        $this->requestPost('/userbar/acceptallfriendrequests/', $data);
+   }
+
     protected function requestGet($endpoint)
     {
         $url = FunnyJunk::$siteUrl . $endpoint;
@@ -107,6 +116,7 @@ class FunnyJunk{
     }
     protected function requestPost($endpoint, $data, $cookie = '')
     {
+        Debugbar::info("FunnyJunk POST: " . $endpoint);
         $url = FunnyJunk::$siteUrl . $endpoint;
         $options = array(
             'http' => array(
@@ -119,6 +129,7 @@ class FunnyJunk{
         );
         $context  = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
+        Debugbar::info("Response: " . $result);
         $headers = $http_response_header;
         return [$result, $headers];
     }
