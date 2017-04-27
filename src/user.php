@@ -66,4 +66,14 @@ class User extends FunnyJunk
 		$this->dom = HtmlDomParser::str_get_html( $this->requestGet('/user/' . $this->username)[0] );
 		return $this;
 	}
+
+	public function populate()
+	{
+		$this->getDom();
+		$this->getId();
+		$this->getIsMod();
+		$this->getIsPatreon();
+		$this->getUserLevel();
+		$this->getIsOCCreator();
+	}
 }
