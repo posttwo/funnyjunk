@@ -1,7 +1,13 @@
 <?php
 namespace Posttwo\FunnyJunk;
+
+use Sunra\PhpSimple\HtmlDomParser;
+
 class User extends FunnyJunk
 {	
+
+	protected $dom;
+
     public function set($data) {
         foreach ($data AS $key => $value) $this->{$key} = $value;
     }
@@ -24,6 +30,40 @@ class User extends FunnyJunk
 		if($key == false)
 			$this->isMod = false;
 		
+		return $this;
+	}
+
+	public function getUserLevel()
+	{
+		$levelString = $this->dom->find('.permissionsLink b')[0]->plaintext;
+		$level = filter_var($levelString, FILTER_SANITIZE_NUMBER_INT);
+		$this->level = $level;
+		return $this;
+	}
+
+	public function getIsPatreon()
+	{
+		$patronElement = $this->dom->find('.profileHat');
+		if($patronElement == null)
+			$this->patreon = false;
+		else
+			$this->patreon = true;
+		return $this;
+	}
+
+	public function getIsOCCreator()
+	{
+		$patronElement = $this->dom->find('#useritemsrewards_content');
+		if($patronElement == null)
+			$this->occreator = false;
+		else
+			$this->occreator = true;
+		return $this;
+	}
+
+	public function getDom()
+	{
+		$this->dom = HtmlDomParser::str_get_html( $this->requestGet('/user/' . $this->username)[0] );
 		return $this;
 	}
 }
