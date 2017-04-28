@@ -1,13 +1,8 @@
 <?php
 namespace Posttwo\FunnyJunk;
 
-use Sunra\PhpSimple\HtmlDomParser;
-
 class User extends FunnyJunk
 {	
-
-	protected $dom;
-
     public function set($data) {
         foreach ($data AS $key => $value) $this->{$key} = $value;
     }
@@ -22,58 +17,33 @@ class User extends FunnyJunk
 	
 	public function getIsMod()
 	{
-		$mods = $this->requestGet(FunnyJunk::$endPoints->allMods);
-		$mods = json_decode($mods[0]);
-		$key = array_search($this->username, array_column($mods, 'username'));
-		
-		$this->isMod = true;
-		if($key == false)
-			$this->isMod = false;
-		
-		return $this;
+		if(0 === strpos($this->role_name, 'flag_moderator'))
+		{
+			$this->isMod = true;
+		}
 	}
 
 	public function getUserLevel()
 	{
-		$levelString = $this->dom->find('.permissionsLink b')[0]->plaintext;
+		$levelString = $this->group_name;
 		$level = filter_var($levelString, FILTER_SANITIZE_NUMBER_INT);
-		$this->level = $level;
+		$this->level = (int)$level;
 		return $this;
 	}
 
-	public function getIsPatreon()
+	public function getUserInfo()
 	{
-		$patronElement = $this->dom->find('.profileHat');
-		if($patronElement == null)
-			$this->patreon = false;
-		else
-			$this->patreon = true;
-		return $this;
-	}
-
-	public function getIsOCCreator()
-	{
-		$patronElement = $this->dom->find('#useritemsrewards_content');
-		if($patronElement == null)
-			$this->occreator = false;
-		else
-			$this->occreator = true;
-		return $this;
-	}
-
-	public function getDom()
-	{
-		$this->dom = HtmlDomParser::str_get_html( $this->requestGet('/user/' . $this->username)[0] );
-		return $this;
+		$info = $this->requestPost(env("FJ_API_ENDPOINT") . $this->username, ["key" => env("FJ_API_KEY")]);
+		$info = json_decode($info[0]);
+		$this->set($info);
 	}
 
 	public function populate()
 	{
-		$this->getDom();
 		$this->getId();
-		$this->getIsMod();
-		$this->getIsPatreon();
+		$this->getUserInfo();
 		$this->getUserLevel();
-		$this->getIsOCCreator();
+		$this->getIsMod();
+		dd($this);
 	}
 }
