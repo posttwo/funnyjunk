@@ -44,6 +44,5 @@ class User extends FunnyJunk
 		$this->getUserInfo();
 		$this->getUserLevel();
 		$this->getIsMod();
-		dd($this);
 	}
 }
