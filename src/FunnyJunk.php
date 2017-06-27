@@ -116,11 +116,13 @@ class FunnyJunk{
     }
     protected function requestPost($endpoint, $data, $cookie = '')
     {
+        Debugbar::info("Cookie: " . FunnyJunk::$cookie);
         Debugbar::info("FunnyJunk POST: " . $endpoint);
         $url = FunnyJunk::$siteUrl . $endpoint;
         $options = array(
             'http' => array(
                 'header'  => "User-Agent:PosttwoFJSDK/1.0\r\n" .
+                             "X-Requested-With: XMLHttpRequest\r\n" .
 							 "Content-type: application/x-www-form-urlencoded\r\n" . 
                              "Cookie: " . FunnyJunk::$cookie . '',
                 'method'  => 'POST',
