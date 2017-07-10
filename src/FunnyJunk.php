@@ -98,6 +98,12 @@ class FunnyJunk{
         $data = ['user' => 'posttwo'];
         $this->requestPost('/userbar/acceptallfriendrequests/', $data);
    }
+	
+   public function getByUrl($url)
+   {
+       $array = json_decode($this->requestPost('/ms/getByURL/', ['isAndroid' => true, 'urlToPost' => $url])[0] );
+       return $array;
+   }
 
     protected function requestGet($endpoint)
     {
