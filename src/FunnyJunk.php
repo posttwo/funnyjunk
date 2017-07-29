@@ -128,7 +128,6 @@ class FunnyJunk{
                     break;
            }
        }
-       dd($s);
        return $s;
    }
 
