@@ -98,11 +98,38 @@ class FunnyJunk{
         $data = ['user' => 'posttwo'];
         $this->requestPost('/userbar/acceptallfriendrequests/', $data);
    }
-	
+
    public function getByUrl($url)
    {
        $array = json_decode($this->requestPost('/ms/getByURL/', ['isAndroid' => true, 'urlToPost' => $url])[0] );
        return $array;
+   }
+
+   public function getRatingCounters()
+   {
+       $file = $this->requestGet("/");
+       $s['links'] = 0;
+       $s['sfw']   = 0;
+       $s['nsfw']  = 0;
+
+       foreach(\HTMLDomParser::str_get_html($file[0])->find('.flexModAlerts2') as $modAlert)
+       {
+           $text = $modAlert->href;
+           $value = (int)filter_var($modAlert->plaintext, FILTER_SANITIZE_NUMBER_INT);
+           switch ($text){
+                case "/sfw_mod/links/":
+                    $s['links'] = $value;
+                    break;
+                case "/sfw_mod/contents/":
+                    $s['sfw'] = $value;
+                    break;
+                case "/nsfw_mod/contents":
+                    $s['nsfw'] = $value;
+                    break;
+           }
+       }
+       dd($s);
+       return $s;
    }
 
     protected function requestGet($endpoint)
