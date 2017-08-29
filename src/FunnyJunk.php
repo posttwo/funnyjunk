@@ -21,26 +21,26 @@ class FunnyJunk{
 
     public function login($login, $password)
     {
-        FunnyJunk::$cookie = '';
         $cache = Cache::get($login . "-cookie");
         if($cache == null){
             Debugbar::info("Missed cache for login");
             $data = array('username' => $login, 'password' => $password);
             $r = $this->requestPost(FunnyJunk::$endPoints->login, $data);
             Debugbar::info($r[0]);
+            $cookie = '';
             foreach ($r[1] as $hdr) {
                 if (preg_match('/^Set-Cookie:\s*([^;]+)/', $hdr, $matches)) {
                     parse_str($matches[1], $tmp);
                     $key = key($tmp);
                     $value = $tmp[$key];
-                    FunnyJunk::$cookie = FunnyJunk::$cookie . $key . '=' . $value . '; ';
+                    $cookie = $cookie . $key . '=' . $value . '; ';
                 }
             }
-            FunnyJunk::$cookie = substr(FunnyJunk::$cookie, 0, -2);
-            Cache::put($login . "-cookie", FunnyJunk::$cookie, 180);
+            Cache::put($login . "-cookie", $cookie, 180);
+            Cache::forever("activecookie-cookie-bot", $cookie);
         }else{
             Debugbar::info("Logging in with cached cookie");
-            FunnyJunk::$cookie = $cache;
+            Cache::forever("activecookie-cookie-bot", $cache);
         }
         
     }
@@ -137,7 +137,7 @@ class FunnyJunk{
         $options = array(
             'http' => array(
                 'header'  => "accept:application/json, text/javascript, */*; q=0.01\r\nx-requested-with: XMLHttpRequest\r\n" . 
-                             "Cookie: " . FunnyJunk::$cookie . '',
+                             "Cookie: " . Cache::get("activecookie-cookie-bot") . '',
                 'method'  => 'GET'
             )
         );
@@ -148,7 +148,7 @@ class FunnyJunk{
     }
     protected function requestPost($endpoint, $data, $cookie = '')
     {
-        Debugbar::info("Cookie: " . FunnyJunk::$cookie);
+        Debugbar::info("Cookie: " . Cache::get("activecookie-cookie-bot"));
         Debugbar::info("FunnyJunk POST: " . $endpoint);
         $url = FunnyJunk::$siteUrl . $endpoint;
         $options = array(
@@ -156,7 +156,7 @@ class FunnyJunk{
                 'header'  => "User-Agent:PosttwoFJSDK/1.0\r\n" .
                              "X-Requested-With: XMLHttpRequest\r\n" .
 							 "Content-type: application/x-www-form-urlencoded\r\n" . 
-                             "Cookie: " . FunnyJunk::$cookie . '',
+                             "Cookie: " . Cache::get("activecookie-cookie-bot") . '',
                 'method'  => 'POST',
                 'content' => http_build_query($data)
             )

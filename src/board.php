@@ -10,7 +10,15 @@ class Board extends FunnyJunk
     public $id   = null;
     public $dj   = [];
 
+    public function getId() {
+        $data = json_decode($this->requestPost('/ms/getByURL/', ['isAndroid' => true, 'urlToPost' => '/' . $this->name])[0] );
+        $this->id   = $data->id;
+        $this->name = $data->board_name;
+        return $this;
+    }
+
     public function getDom() {
+        //NAME REQUIRED
         $b = $this->requestGet("/" . $this->name);
         $this->dom = HtmlDomParser::str_get_html($b[0]);
         
@@ -31,9 +39,12 @@ class Board extends FunnyJunk
     }
 
     public function setDJ($number, $username) {
-        $this->requestPost('/dj_controls/djChange', ['type' => $number, 'username' => $username, 'contentId' => $this->id]);
+        $response = $this->requestPost('/dj_controls/djChange', ['type' => $number, 'username' => $username, 'contentId' => $this->id]);
+        $response = json_decode($response[0]);
+        if($response->success == false)
+            return false;
         $this->dj[$number] = $username;
-        return $this;
+        return true;
     }
 
     public function getCommentTree($url) {
@@ -42,16 +53,18 @@ class Board extends FunnyJunk
     }
 
     public function postMessage($message, $getRoot = true) {
+        return "/party/506308#506308";
         $x = $this->requestPost('/comment/add/content/' . $this->id, ['text' => $message]);
         $id = substr($x[0], 3);
-
+        if(substr($x[0], 0, 2) != "OK")
+            return false;
         //get comment url... shitty way
         if($getRoot){
-            $coms = json_decode($this->requestPost('/ms/getByURL/', ['isAndroid' => true, 'urlToPost' => "/u\/" . env("FJ_USERNAME")])[0] )->latest_comments;
+            $coms = json_decode($this->requestPost('/ms/getByURL/', ['isAndroid' => true, 'urlToPost' => "/user/" . env("FJ_USERNAME")])[0] )->latest_comments;
             $x = $this->arraySearch($coms, $id);
             return $coms[$x]->comment_url;
         }
-        return $this;
+        return true;
     }
 
     protected function arraySearch($array, $id){
