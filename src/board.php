@@ -53,7 +53,6 @@ class Board extends FunnyJunk
     }
 
     public function postMessage($message, $getRoot = true) {
-        return "/party/506308#506308";
         $x = $this->requestPost('/comment/add/content/' . $this->id, ['text' => $message]);
         $id = substr($x[0], 3);
         if(substr($x[0], 0, 2) != "OK")
