@@ -9,8 +9,7 @@ class User extends FunnyJunk
 	
 	public function getId()
 	{
-		$data = array('username' => $this->username);
-		$x = $this->requestPost(FunnyJunk::$endPoints->getUserId, $data);
+		$x = $this->requestGet(FunnyJunk::$endPoints->getUserId . $this->username);
 		$this->id = (int)$x[0];
 		return $this;
 	}
