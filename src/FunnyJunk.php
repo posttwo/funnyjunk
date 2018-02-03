@@ -16,7 +16,7 @@ class FunnyJunk{
         FunnyJunk::$endPoints->pm->inbox = '/pm/folder/inbox/0/0/0/15';
 		FunnyJunk::$endPoints->onlineMods = '/ajax/getOnlineModList';
 		FunnyJunk::$endPoints->allMods = '/ajax/getModRanksList';
-		FunnyJunk::$endPoints->getUserId = '/ajax/getUserId';
+		FunnyJunk::$endPoints->getUserId = '/find/user/';
     }
 
     public function login($login, $password)
