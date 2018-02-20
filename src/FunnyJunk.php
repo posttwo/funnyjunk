@@ -28,7 +28,7 @@ class FunnyJunk{
             $r = $this->requestPost(FunnyJunk::$endPoints->login, $data);
             Debugbar::info($r[0]);
             $cookie = '';
-            $fuckingAdminIsDumb; = '';
+            $fuckingAdminIsDumb = '';
             foreach ($r[1] as $hdr) {
                 if (preg_match('/^Set-Cookie:\s*([^;]+)/', $hdr, $matches)) {
                     parse_str($matches[1], $tmp);
