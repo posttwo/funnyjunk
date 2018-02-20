@@ -28,14 +28,19 @@ class FunnyJunk{
             $r = $this->requestPost(FunnyJunk::$endPoints->login, $data);
             Debugbar::info($r[0]);
             $cookie = '';
+            $fuckingAdminIsDumb; = '';
             foreach ($r[1] as $hdr) {
                 if (preg_match('/^Set-Cookie:\s*([^;]+)/', $hdr, $matches)) {
                     parse_str($matches[1], $tmp);
                     $key = key($tmp);
                     $value = $tmp[$key];
-                    $cookie = $cookie . $key . '=' . $value . '; ';
+                    if($key == 'fjsession')
+                        $fuckingAdminIsDumb = $key . '=' . $value . '; ';
+                    else
+                        $cookie = $cookie . $key . '=' . $value . '; ';
                 }
             }
+	    $cookie = $cookie . 'fjsession' . '=' . $fuckingAdminIsDumb;
             Cache::put($login . "-cookie", $cookie, 180);
             Cache::forever("activecookie-cookie-bot", $cookie);
         }else{
