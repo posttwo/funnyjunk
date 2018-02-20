@@ -40,7 +40,7 @@ class FunnyJunk{
                         $cookie = $cookie . $key . '=' . $value . '; ';
                 }
             }
-	    $cookie = $cookie . 'fjsession' . '=' . $fuckingAdminIsDumb;
+	    $cookie = $cookie . $fuckingAdminIsDumb;
             Cache::put($login . "-cookie", $cookie, 180);
             Cache::forever("activecookie-cookie-bot", $cookie);
         }else{
