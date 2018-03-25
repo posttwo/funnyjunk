@@ -16,7 +16,8 @@ class FunnyJunk{
         FunnyJunk::$endPoints->pm->inbox = '/pm/folder/inbox/0/0/0/15';
 		FunnyJunk::$endPoints->onlineMods = '/ajax/getOnlineModList';
 		FunnyJunk::$endPoints->allMods = '/ajax/getModRanksList';
-		FunnyJunk::$endPoints->getUserId = '/find/user/';
+        FunnyJunk::$endPoints->getUserId = '/find/user/';
+        FunnyJunk::$endPoints->ajaxModInfo = '/ajax/ajaxModInfo';
     }
 
     public function login($login, $password)
@@ -110,30 +111,10 @@ class FunnyJunk{
        return $array;
    }
 
-   public function getRatingCounters()
+   public function getModInfo()
    {
-       $file = $this->requestGet("/");
-       $s['links'] = 0;
-       $s['sfw']   = 0;
-       $s['nsfw']  = 0;
-
-       foreach(\HTMLDomParser::str_get_html($file[0])->find('.flexModAlerts2') as $modAlert)
-       {
-           $text = $modAlert->href;
-           $value = (int)filter_var($modAlert->plaintext, FILTER_SANITIZE_NUMBER_INT);
-           switch ($text){
-                case "/sfw_mod/links/":
-                    $s['links'] = $value;
-                    break;
-                case "/sfw_mod/contents/":
-                    $s['sfw'] = $value;
-                    break;
-                case "/nsfw_mod/contents":
-                    $s['nsfw'] = $value;
-                    break;
-           }
-       }
-       return $s;
+      $array = json_decode($this->requestGet(FunnyJunk::$endPoints->ajaxModInfo)[0]);
+      return $array;
    }
 
     protected function requestGet($endpoint)
