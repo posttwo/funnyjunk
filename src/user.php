@@ -40,7 +40,7 @@ class User extends FunnyJunk
 	
 	public function getUsersSameId()
 	{
-		$info = $this->requestPost('https://funnyjunk.com/ajax/get_users_with_same_ip/', ['user_id' => $this->id]);
+		$info = $this->requestPost('/ajax/get_users_with_same_ip/', ['user_id' => $this->id]);
 		$info = json_decode($info[0]);
 		return $info;
 	}
