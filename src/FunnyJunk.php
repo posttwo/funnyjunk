@@ -117,6 +117,12 @@ class FunnyJunk{
       return $array;
    }
 
+    public function getFlags()
+    {
+        $info = $this->requestPost('/flags', ["key" => env("FJ_API_KEY"), 'json' => 1]);
+        return $info[0];
+    }
+
     protected function requestGet($endpoint)
     {
         $url = FunnyJunk::$siteUrl . $endpoint;
