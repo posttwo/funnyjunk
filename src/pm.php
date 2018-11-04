@@ -21,9 +21,20 @@ class PM extends FunnyJunk
 	
     public function sendToUser($userid, $username, $topic, $text)
     {
-        $data = array('userId' => $userid, 'userName' => $username, 'subject' => $topic, 'text' => $text);
-        Debugbar::info($data);
-        $x = $this->requestPost('/pm/send/', $data);
+        if($topic != '')
+        {
+            $text = '[big]' . $topic . "[big]\n\r" . $text
+        }
+        $data = array(
+            'userId' => $userid,
+            'key' => env('FJ_API_KEY'),
+            'text' => $text
+        )
+        $x = $this->requestPost('/commapp/API', $data);
+        
+        //$data = array('userId' => $userid, 'userName' => $username, 'subject' => $topic, 'text' => $text);
+        //Debugbar::info($data);
+        //$x = $this->requestPost('/pm/send/', $data);
     }
 
 	public function send()
