@@ -23,13 +23,13 @@ class PM extends FunnyJunk
     {
         if($topic != '')
         {
-            $text = '[big]' . $topic . "[big]\n\r" . $text
+            $text = '[big]' . $topic . "[big]\n\r" . $text;
         }
         $data = array(
             'userId' => $userid,
             'key' => env('FJ_API_KEY'),
             'text' => $text
-        )
+        );
         $x = $this->requestPost('/commapp/API', $data);
         
         //$data = array('userId' => $userid, 'userName' => $username, 'subject' => $topic, 'text' => $text);
