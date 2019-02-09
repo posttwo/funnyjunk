@@ -45,6 +45,16 @@ class User extends FunnyJunk
 		return $info;
 	}
 
+	public function getUsername()
+	{
+		$x = $this->requestGet('/find/user/' . $this->id);
+		$x = $x[0];
+		$x = substr($x, 0, -4);
+		$x = substr(strrchr(rtrim($x, '/'), '/'), 1);
+		$this->username = $x;
+		return $this;
+	}
+
 	public function populate()
 	{
 		$this->getId();

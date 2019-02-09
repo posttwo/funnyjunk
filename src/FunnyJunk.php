@@ -123,6 +123,13 @@ class FunnyJunk{
         return $info[0];
     }
 
+    public function getComplaints()
+    {
+        $data = $this->requestPost('/mods/getModComplaints', ["key" => env("FJ_API_KEY")]);
+        $data = json_decode($data[0]);
+        return $data;
+    }
+
     protected function requestGet($endpoint)
     {
         $url = FunnyJunk::$siteUrl . $endpoint;
