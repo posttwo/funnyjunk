@@ -130,6 +130,12 @@ class FunnyJunk{
         return $data;
     }
 
+    public function setComplaintStatus($id, $status, $text)
+    {
+        $data = $this->requestPost('/mods/changeComplaintStatus', ['id' => $id, 'status' => $status, 'comment' => $text]);
+        return $data;
+    }
+
     protected function requestGet($endpoint)
     {
         $url = FunnyJunk::$siteUrl . $endpoint;
