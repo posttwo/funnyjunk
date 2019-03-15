@@ -111,6 +111,13 @@ class FunnyJunk{
        return $array;
    }
 
+   public function getUserFlags()
+   {
+      $data = $this->requestPost('/mods/latestUserFlags', ["key" => env("FJ_API_KEY")]);
+      $data = json_decode($data[0]);
+      return $data;
+   }
+
    public function getModInfo()
    {
       $array = json_decode($this->requestGet(FunnyJunk::$endPoints->ajaxModInfo)[0]);
