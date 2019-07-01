@@ -23,9 +23,9 @@ class User extends FunnyJunk
 		}
 	}
 	
-	public function permaBan()
+	public function permaBan($msg)
 	{
-		$info = $this->requestPost('/ajax/ban', ["key" => env("FJ_API_KEY"), "user_id" => $this->id, 'ban_ip' => 0, "ban_reason" => 'Ban performed on behalf of moderator, contact posttwo for details', 'remove_content' => 0, 'lifetime' => 0]);
+		$info = $this->requestPost('/ajax/ban', ["key" => env("FJ_API_KEY"), "user_id" => $this->id, 'ban_ip' => 0, "ban_reason" => "Permabanned $msg", 'remove_content' => 0, 'lifetime' => 0]);
 	}
 	
 	public function getUserLevel()
