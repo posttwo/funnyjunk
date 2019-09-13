@@ -42,6 +42,7 @@ class FunnyJunk{
                 }
             }
 	    $cookie = $cookie . $fuckingAdminIsDumb;
+	    $cookie = $cookie . 'sortT=thumbs';
             Cache::put($login . "-cookie", $cookie, 180);
             Cache::forever("activecookie-cookie-bot", $cookie);
         }else{
