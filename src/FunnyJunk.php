@@ -107,7 +107,7 @@ class FunnyJunk{
 
    public function getByUrl($url)
    {
-       $array = json_decode($this->requestPost('/ms/getByURL/', ['isAndroid' => true, 'urlToPost' => $url])[0] );
+       $array = json_decode($this->requestPost('/ms/getByURL/', ['isAndroid' => true, 'urlToPost' => $url, "key" => env("FJ_API_KEY") ])[0] );
        return $array;
    }
 
