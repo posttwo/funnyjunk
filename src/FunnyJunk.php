@@ -22,35 +22,37 @@ class FunnyJunk{
 
     public function login($login, $password)
     {
-        $cache = Cache::get($login . "-cookie");
-        if($cache == null){
-            Debugbar::info("Missed cache for login");
-            $data = array('username' => $login, 'password' => $password);
-            $r = $this->requestPost(FunnyJunk::$endPoints->login, $data);
-            Debugbar::info($r[0]);
-            $cookie = '';
-            $fuckingAdminIsDumb = '';
-            foreach ($r[1] as $hdr) {
-                if (preg_match('/^Set-Cookie:\s*([^;]+)/', $hdr, $matches)) {
-                    parse_str($matches[1], $tmp);
-                    $key = key($tmp);
-                    $value = $tmp[$key];
-                    if($key == 'fjsession')
-                        $fuckingAdminIsDumb = $key . '=' . $value . '; ';
-                    else
-                        $cookie = $cookie . $key . '=' . $value . '; ';
-                }
-            }
+	    $cache = Cache::get($login . "-cookie");
+	    if($cache == null){
+		Debugbar::info("Missed cache for login");
+		$data = array('username' => $login, 'password' => $password);
+		$r = $this->requestPost(FunnyJunk::$endPoints->login, $data);
+		Debugbar::info($r[0]);
+		$cookie = '';
+		$fuckingAdminIsDumb = '';
+		foreach ($r[1] as $hdr) {
+		    if (preg_match('/^Set-Cookie:\s*([^;]+)/', $hdr, $matches)) {
+			parse_str($matches[1], $tmp);
+			$key = key($tmp);
+			$value = $tmp[$key];
+			if($key == 'fjsession')
+			    $fuckingAdminIsDumb = $key . '=' . $value . '; ';
+			else
+			    $cookie = $cookie . $key . '=' . $value . '; ';
+		    }
+		}
+	    //FJ 503
 	    $cookie = $cookie . $fuckingAdminIsDumb;
 	    $cookie = $cookie . 'sortT=thumbs';
-            Cache::put($login . "-cookie", $cookie, 180);
-            Cache::forever("activecookie-cookie-bot", $cookie);
-        }else{
-            Debugbar::info("Logging in with cached cookie");
-            Cache::forever("activecookie-cookie-bot", $cache);
-        }
-        
-    }
+	    $cookie = str_replace('sortT=trending;', '', $cookie);
+		Cache::put($login . "-cookie", $cookie, 180);
+		Cache::forever("activecookie-cookie-bot", $cookie);
+	    }else{
+		Debugbar::info("Logging in with cached cookie");
+		Cache::forever("activecookie-cookie-bot", $cache);
+	    }
+
+	}
 	
     public function getInbox()
     {
