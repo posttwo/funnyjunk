@@ -45,7 +45,7 @@ class FunnyJunk{
 	    $cookie = $cookie . $fuckingAdminIsDumb;
 	    $cookie = $cookie . 'sortT=thumbs';
 	    $cookie = str_replace('sortT=trending;', '', $cookie);
-		Cache::put($login . "-cookie", $cookie, 180);
+		Cache::put($login . "-cookie", $cookie, 180*60);
 		Cache::forever("activecookie-cookie-bot", $cookie);
 	    }else{
 		Debugbar::info("Logging in with cached cookie");
