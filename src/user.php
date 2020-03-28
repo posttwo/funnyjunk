@@ -31,8 +31,9 @@ class User extends FunnyJunk
 	public function getUserLevel()
 	{
 		$thumbs = $this->total_comments_thumbs_up + $this->total_content_thumbs_up;
-		$thumbs = $thumbs/600;
-		$this->level = round($thumbs);
+		if($thumbs <= 0) $thumbs = 1;
+		$level = (39.07 * (log (thumb) )) - 105.19;
+		$this->level = round($level);
 		return $this;
 	}
 
