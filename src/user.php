@@ -32,7 +32,7 @@ class User extends FunnyJunk
 	{
 		$thumbs = $this->total_comments_thumbs_up + $this->total_content_thumbs_up;
 		if($thumbs <= 0) $thumbs = 1;
-		$level = (39.07 * (log (thumb) )) - 105.19;
+		$level = (39.07 * (log ($thumbs) )) - 105.19;
 		$this->level = round($level);
 		return $this;
 	}
