@@ -30,10 +30,9 @@ class User extends FunnyJunk
 	
 	public function getUserLevel()
 	{
-		$levelString = $this->group_name;
-		$level = filter_var($levelString, FILTER_SANITIZE_NUMBER_INT);
-		$this->level = (int)$level;
-		return $this;
+		$thumbs = $this->total_comments_thumbs_up + $this->total_content_thumbs_up;
+		$thumbs = round($thumbs);
+		return $thumbs/280;
 	}
 
 	public function getUserInfo()
