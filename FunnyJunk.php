@@ -131,7 +131,7 @@ class FunnyJunk{
             "showModUserFlags" => 0
         ];
 
-        $response = $this->requestPost("https://funnyjunk.com/mods/getUserFlags", $payload);
+        $response = $this->requestPost("/mods/getUserFlags", $payload);
 
         return json_decode($response[0]);
     }
@@ -149,7 +149,7 @@ class FunnyJunk{
             "showModUserFlags" => 0
         ];
 
-        $response = $this->requestPost("https://funnyjunk.com/mods/getUserFlags", $payload);
+        $response = $this->requestPost("/mods/getUserFlags", $payload);
 
         return json_decode($response[0], true);
     }
