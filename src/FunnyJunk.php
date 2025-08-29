@@ -185,7 +185,7 @@ class FunnyJunk{
 
 
 
-        $response = $this->requestPost("https://funnyjunk.com/mods/getUserFlags", $payload);
+        $response = $this->requestPost("/mods/getUserFlags", $payload);
 
 
 
@@ -239,7 +239,7 @@ class FunnyJunk{
 
 
 
-        $response = $this->requestPost("https://funnyjunk.com/mods/getUserFlags", $payload);
+        $response = $this->requestPost("/mods/getUserFlags", $payload);
 
 
 
