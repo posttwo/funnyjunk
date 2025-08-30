@@ -118,42 +118,6 @@ class FunnyJunk{
       return $data;
    }
 
-    public function getReviewedUserFlags($page = 1)
-    {
-        $payload = [
-            "page" => $page,
-            "showUnreviewed" => 1,
-            "uniqueOnly" => 1,
-            "showLinks" => 0,
-            "showEvents" => 0,
-            "showModFlagsEverything" => 0,
-            "showModFlags" => 0,
-            "showModUserFlags" => 0
-        ];
-
-        $response = $this->requestPost("/mods/getUserFlags", $payload);
-
-        return json_decode($response[0]);
-    }
-
-    public function getUnreviewedUserFlags($page = 1)
-    {
-        $payload = [
-            "page" => $page,
-            "showUnreviewed" => 0,
-            "uniqueOnly" => 1,
-            "showLinks" => 0,
-            "showEvents" => 0,
-            "showModFlagsEverything" => 0,
-            "showModFlags" => 0,
-            "showModUserFlags" => 0
-        ];
-
-        $response = $this->requestPost("/mods/getUserFlags", $payload);
-
-        return json_decode($response[0], true);
-    }
-
    public function getModInfo()
    {
       $array = json_decode($this->requestGet(FunnyJunk::$endPoints->ajaxModInfo)[0]);
