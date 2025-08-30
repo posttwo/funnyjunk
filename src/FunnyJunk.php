@@ -18,6 +18,7 @@ class FunnyJunk{
 		FunnyJunk::$endPoints->allMods = '/ajax/getModRanksList';
         FunnyJunk::$endPoints->getUserId = '/find/user/';
         FunnyJunk::$endPoints->ajaxModInfo = '/ajax/ajaxModInfo';
+        FunnyJunk::$endPoints->getUserFlags = '/mods/getUserFlags';
     }
 
     public function login($login, $password)
@@ -120,6 +121,42 @@ class FunnyJunk{
       $data = json_decode($data[0]);
       return $data;
    }
+
+    public function getReviewedUserFlags($page = 1)
+    {
+        $payload = [
+            "page" => $page,
+            "showUnreviewed" => 1,
+            "uniqueOnly" => 1,
+            "showLinks" => 0,
+            "showEvents" => 0,
+            "showModFlagsEverything" => 0,
+            "showModFlags" => 0,
+            "showModUserFlags" => 0
+        ];
+
+        $response = $this->requestPost(FunnyJunk::$endPoints->getUserFlags, $payload);
+
+        return json_decode($response[0]);
+    }
+
+    public function getUnreviewedUserFlags($page = 1)
+    {
+        $payload = [
+            "page" => $page,
+            "showUnreviewed" => 0,
+            "uniqueOnly" => 1,
+            "showLinks" => 0,
+            "showEvents" => 0,
+            "showModFlagsEverything" => 0,
+            "showModFlags" => 0,
+            "showModUserFlags" => 0
+        ];
+
+        $response = $this->requestPost(FunnyJunk::$endPoints->getUserFlags, $payload);
+
+        return json_decode($response[0], true);
+    }
 
    public function getModInfo()
    {
