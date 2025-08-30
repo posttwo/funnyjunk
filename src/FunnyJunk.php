@@ -14,10 +14,11 @@ class FunnyJunk{
         FunnyJunk::$endPoints->pm = new \stdClass();
         FunnyJunk::$endPoints->login = '/members/ajaxlogin';
         FunnyJunk::$endPoints->pm->inbox = '/pm/folder/inbox/0/0/0/15';
-		FunnyJunk::$endPoints->onlineMods = '/ajax/getOnlineModList';
-		FunnyJunk::$endPoints->allMods = '/ajax/getModRanksList';
+        FunnyJunk::$endPoints->onlineMods = '/ajax/getOnlineModList';
+        FunnyJunk::$endPoints->allMods = '/ajax/getModRanksList';
         FunnyJunk::$endPoints->getUserId = '/find/user/';
         FunnyJunk::$endPoints->ajaxModInfo = '/ajax/ajaxModInfo';
+        FunnyJunk::$endPoints->getUserFlags = '/mods/getUserFlags';
     }
 
     public function login($login, $password)
@@ -127,6 +128,42 @@ class FunnyJunk{
       return $array;
    }
 
+    public function getReviewedUserFlags($page = 1)
+    {
+        $payload = [
+            "page" => $page,
+            "showUnreviewed" => 1,   
+            "uniqueOnly" => 1,
+            "showLinks" => 0,
+            "showEvents" => 0,
+            "showModFlagsEverything" => 0,
+            "showModFlags" => 0,
+            "showModUserFlags" => 0
+        ];
+
+        $response = $this->requestPost(FunnyJunk::$endPoints->getUserFlags, $payload);
+
+        return json_decode($response[0]);
+    }
+
+    public function getUnreviewedUserFlags($page = 1)
+    {
+        $payload = [
+            "page" => $page,
+            "showUnreviewed" => 0,   
+            "uniqueOnly" => 1,
+            "showLinks" => 0,
+            "showEvents" => 0,
+            "showModFlagsEverything" => 0,
+            "showModFlags" => 0,
+            "showModUserFlags" => 0
+        ];
+
+        $response = $this->requestPost(FunnyJunk::$endPoints->getUserFlags, $payload);
+
+        return json_decode($response[0], true);
+    }
+
     public function getFlags()
     {
         $info = $this->requestPost('/flags', ["key" => env("FJ_API_KEY"), 'json' => 1]);
@@ -144,110 +181,6 @@ class FunnyJunk{
     {
         $data = $this->requestPost('/mods/changeComplaintStatus', ['id' => $id, 'status' => $status, 'comment' => $text]);
         return $data;
-    }
-
-	    public function getReviewedUserFlags($page = 1)
-
-
-    {
-
-
-        $payload = [
-
-
-            "page" => $page,
-
-
-            "showUnreviewed" => 1,
-
-
-            "uniqueOnly" => 1,
-
-
-            "showLinks" => 0,
-
-
-            "showEvents" => 0,
-
-
-            "showModFlagsEverything" => 0,
-
-
-            "showModFlags" => 0,
-
-
-            "showModUserFlags" => 0
-
-
-        ];
-
-
-
-
-
-        $response = $this->requestPost("/mods/getUserFlags", $payload);
-
-
-
-
-
-        return json_decode($response[0]);
-
-
-    }
-
-
-
-
-
-    public function getUnreviewedUserFlags($page = 1)
-
-
-    {
-
-
-        $payload = [
-
-
-            "page" => $page,
-
-
-            "showUnreviewed" => 0,
-
-
-            "uniqueOnly" => 1,
-
-
-            "showLinks" => 0,
-
-
-            "showEvents" => 0,
-
-
-            "showModFlagsEverything" => 0,
-
-
-            "showModFlags" => 0,
-
-
-            "showModUserFlags" => 0
-
-
-        ];
-
-
-
-
-
-        $response = $this->requestPost("/mods/getUserFlags", $payload);
-
-
-
-
-
-        return json_decode($response[0], true);
-
-
     }
 
     protected function requestGet($endpoint)
@@ -292,4 +225,3 @@ class FunnyJunk{
         var_dump($x);
     }   
 }
-
